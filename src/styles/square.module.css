@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css?family=Reenie+Beanie&display=swap");
+
+.square:focus {
+  outline: none;
+}
+
+.square {
+  background: #2f4f4f;
+  color: #fff;
+  font-size: 50px;
+  float: left;
+  font-weight: bold;
+  line-height: 50px;
+  height: 100px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 100px;
+  font-family: "Reenie Beanie", sans-serif;
+}

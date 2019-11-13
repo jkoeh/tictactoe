@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Board from "./board";
+
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -81,28 +82,47 @@ class Game extends Component {
 
     let moves = history.map((step, move) => {
       const { x, y } = this.getXYCoordinate(step.coordinate);
-      let currentMove = stepNumber === move ? { fontWeight: "bold" } : {};
+      let currentMove =
+        stepNumber === move ? { textDecoration: "underline" } : {};
       const desc = move
         ? `Go to move # ${move} (x: ${x}, y:${y})`
         : "Go to game start";
       return (
-        <li key={move}>
-          <button style={currentMove} onClick={() => this.jumpTo(move)}>
+        <li style={{ cursor: "pointer" }} key={move}>
+          <div style={currentMove} onClick={() => this.jumpTo(move)}>
             {desc}
-          </button>
+          </div>
         </li>
       );
     });
 
     return (
-      <div className="game">
+      <div className=" game">
         <div className="game-board">
-          <Board squares={currentSquares} onClick={i => this.handleClick(i)} />
-        </div>
-        <div className="game-info">
           <div>{status}</div>
-          <button onClick={() => this.sortMove()}>sort</button>
-          <ol>{this.state.asc ? moves : moves.reverse()}</ol>
+          <Board squares={currentSquares} onClick={i => this.handleClick(i)} />
+
+          <div>
+            <div
+              style={{
+                marginTop: "-400px",
+
+                cursor: "pointer"
+              }}
+              onClick={() => this.sortMove()}
+            >
+              Sort
+            </div>
+            <ul
+              style={{
+                marginTop: "30px",
+                marginLeft: "10px",
+                listStyle: "none"
+              }}
+            >
+              {this.state.asc ? moves : moves.reverse()}
+            </ul>
+          </div>
         </div>
       </div>
     );

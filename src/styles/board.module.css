@@ -1,0 +1,16 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10%;
+}
+
+.board-row {
+  margin: auto;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}

@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import Square from "./square";
+import styles from "../styles/board.module.css";
+
+import WinningLine from "./winningLine";
 class Board extends Component {
   getWinningSquares(squares) {
     const lines = [
@@ -27,12 +30,11 @@ class Board extends Component {
     }
     return answer;
   }
-  renderSquare(i) {
-    let winningSquare = this.getWinningSquares(this.props.squares);
-    let highLighted = winningSquare && winningSquare.includes(i);
+  renderSquare(i, highLighted) {
     return (
       <Square
         key={i}
+        index={i}
         highLighted={highLighted}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
@@ -40,22 +42,32 @@ class Board extends Component {
     );
   }
   renderBoardRow(i) {
+    let winningSquare = this.getWinningSquares(this.props.squares);
     let squares = [];
     for (let j = 0 + i * 3; j < i * 3 + 3; j++) {
-      squares.push(this.renderSquare(j));
+      let highLighted = winningSquare && winningSquare.includes(j);
+      squares.push(this.renderSquare(j, highLighted));
     }
     return (
-      <div key={i} className="board-row">
+      <div style={{ position: "relative" }} key={i} className="board-row">
         {squares}
       </div>
     );
   }
   render() {
-    let boards = [];
+    let winningSquare = this.getWinningSquares(this.props.squares);
+    let boardRows = [];
     for (let i = 0; i < 3; i++) {
-      boards.push(this.renderBoardRow(i));
+      boardRows.push(this.renderBoardRow(i));
     }
-    return <div>{boards}</div>;
+    return (
+      <div style={{ position: "relative" }} className={styles.board}>
+        <div style={{ position: "absolute", width: "297px", height: "100%" }}>
+          {winningSquare ? <WinningLine winningSquare={winningSquare} /> : ""}
+        </div>
+        {boardRows}
+      </div>
+    );
   }
 }
 export default Board;

@@ -61,7 +61,10 @@ class Board extends Component {
       boardRows.push(this.renderBoardRow(i));
     }
     return (
-      <div style={{ position: "relative" }} className={styles.board}>
+      <div
+        style={{ width: "297px", position: "relative" }}
+        className={styles.board}
+      >
         <div style={{ position: "absolute", width: "297px", height: "100%" }}>
           {winningSquare ? <WinningLine winningSquare={winningSquare} /> : ""}
         </div>

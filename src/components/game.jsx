@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Board from "./board";
+import styles from "../styles/game.module.css";
 
 class Game extends Component {
   constructor(props) {
@@ -82,16 +83,17 @@ class Game extends Component {
 
     let moves = history.map((step, move) => {
       const { x, y } = this.getXYCoordinate(step.coordinate);
-      let currentMove =
-        stepNumber === move ? { textDecoration: "underline" } : {};
+      let currentMove = stepNumber === move ? styles.currentMove : {};
       const desc = move
         ? `Go to move # ${move} (x: ${x}, y:${y})`
         : "Go to game start";
       return (
-        <li style={{ cursor: "pointer" }} key={move}>
-          <div style={currentMove} onClick={() => this.jumpTo(move)}>
-            {desc}
-          </div>
+        <li
+          onClick={() => this.jumpTo(move)}
+          className={styles.move}
+          key={move}
+        >
+          <div className={currentMove}>{desc}</div>
         </li>
       );
     });
@@ -102,27 +104,17 @@ class Game extends Component {
           <div>{status}</div>
           <Board squares={currentSquares} onClick={i => this.handleClick(i)} />
 
-          <div>
-            <div
-              style={{
-                marginTop: "-400px",
-
-                cursor: "pointer"
-              }}
-              onClick={() => this.sortMove()}
-            >
-              Sort
-            </div>
-            <ul
-              style={{
-                marginTop: "30px",
-                marginLeft: "10px",
-                listStyle: "none"
-              }}
-            >
-              {this.state.asc ? moves : moves.reverse()}
-            </ul>
+          <div
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => this.sortMove()}
+          >
+            Sort
           </div>
+          <ul className={styles.moveList}>
+            {this.state.asc ? moves : moves.reverse()}
+          </ul>
         </div>
       </div>
     );

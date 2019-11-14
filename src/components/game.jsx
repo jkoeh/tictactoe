@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Board from "./board";
-import styles from "../styles/game.module.css";
-
+import Moves from "./moves";
+import Container from "react-bootstrap/Container";
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -60,11 +60,7 @@ class Game extends Component {
       currentMark: stepNumber % 2 === 0 ? "X" : "O"
     });
   }
-  getXYCoordinate(i) {
-    if (i <= 2) return { x: 1, y: i + 1 };
-    else if (i <= 5) return { x: 2, y: i - 2 };
-    else return { x: 3, y: i - 5 };
-  }
+
   sortMove() {
     let asc = this.state.asc ? false : true;
     this.setState({ asc });
@@ -81,23 +77,14 @@ class Game extends Component {
       ? "Draw, restart?"
       : `Next player: ${this.state.currentMark}`;
 
-    let moves = history.map((step, move) => {
-      const { x, y } = this.getXYCoordinate(step.coordinate);
-      let currentMove = stepNumber === move ? styles.currentMove : {};
-      const desc = move
-        ? `Go to move # ${move} (x: ${x}, y:${y})`
-        : "Go to game start";
-      return (
-        <li
-          onClick={() => this.jumpTo(move)}
-          className={styles.move}
-          key={move}
-        >
-          <div className={currentMove}>{desc}</div>
-        </li>
-      );
-    });
-
+    const moves = (
+      <Moves
+        history={history}
+        stepNumber={stepNumber}
+        reverse={this.state.asc}
+        onClick={i => this.jumpTo(i)}
+      />
+    );
     return (
       <div className=" game">
         <div className="game-board">
@@ -112,9 +99,7 @@ class Game extends Component {
           >
             Sort
           </div>
-          <ul className={styles.moveList}>
-            {this.state.asc ? moves : moves.reverse()}
-          </ul>
+          {moves}
         </div>
       </div>
     );

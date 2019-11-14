@@ -3,6 +3,7 @@ import Square from "./square";
 import styles from "../styles/board.module.css";
 
 import WinningLine from "./winningLine";
+
 class Board extends Component {
   getWinningSquares(squares) {
     const lines = [

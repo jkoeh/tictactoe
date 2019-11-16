@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Board from "./board";
 import Moves from "./moves";
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+
+import Col from "react-bootstrap/Col";
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -89,17 +92,28 @@ class Game extends Component {
       <div className=" game">
         <div className="game-board">
           <div>{status}</div>
-          <Board squares={currentSquares} onClick={i => this.handleClick(i)} />
+          <Container>
+            <Row>
+              <Col lg={6}>
+                <Board
+                  squares={currentSquares}
+                  onClick={i => this.handleClick(i)}
+                />
+              </Col>
+              <Col lg={6}>
+                <div
+                  style={{
+                    cursor: "pointer"
+                  }}
+                  onClick={() => this.sortMove()}
+                >
+                  Sort
+                </div>
 
-          <div
-            style={{
-              cursor: "pointer"
-            }}
-            onClick={() => this.sortMove()}
-          >
-            Sort
-          </div>
-          {moves}
+                {moves}
+              </Col>
+            </Row>
+          </Container>
         </div>
       </div>
     );

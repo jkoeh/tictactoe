@@ -92,27 +92,26 @@ class Game extends Component {
       <div className=" game">
         <div className="game-board">
           <div>{status}</div>
-          <Container>
-            <Row>
-              <Col lg={6}>
-                <Board
-                  squares={currentSquares}
-                  onClick={i => this.handleClick(i)}
-                />
-              </Col>
-              <Col lg={6}>
-                <div
-                  style={{
-                    cursor: "pointer"
-                  }}
-                  onClick={() => this.sortMove()}
-                >
-                  Sort
-                </div>
+          <Container style={{ display: "flex" }}>
+            <div style={{ minWidth: "297px" }}>
+              <Board
+                squares={currentSquares}
+                onClick={i => this.handleClick(i)}
+              />
+            </div>
 
-                {moves}
-              </Col>
-            </Row>
+            <div>
+              <div
+                style={{
+                  cursor: "pointer"
+                }}
+                onClick={() => this.sortMove()}
+              >
+                Sort
+              </div>
+
+              {moves}
+            </div>
           </Container>
         </div>
       </div>

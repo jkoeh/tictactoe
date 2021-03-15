@@ -1,20 +1,26 @@
-import React, { Component } from "react";
-import Board from "./board";
-import Moves from "./moves";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-
-import Col from "react-bootstrap/Col";
+import React, { Component } from 'react';
+import Board from './board';
+import Moves from './moves';
+import styles from '../styles/game.module.css';
 class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
       history: [{ squares: Array(9).fill(null), coordinate: null }],
-      currentMark: "X",
+      currentMark: 'X',
       stepNumber: 0,
       asc: true,
-      winner: null
+      winner: null,
     };
+  }
+  restart() {
+    this.setState({
+      history: [{ squares: Array(9).fill(null), coordinate: null }],
+      currentMark: 'X',
+      stepNumber: 0,
+      asc: true,
+      winner: null,
+    });
   }
   calculateWinner(squares) {
     const lines = [
@@ -25,18 +31,12 @@ class Game extends Component {
       [2, 5, 8],
       [2, 4, 6],
       [3, 4, 5],
-      [6, 7, 8]
+      [6, 7, 8],
     ];
 
     for (let line of lines) {
       const [a, b, c] = line;
-      if (
-        squares[a] &&
-        squares[b] &&
-        squares[c] &&
-        squares[a] === squares[b] &&
-        squares[b] === squares[c]
-      ) {
+      if (squares[a] && squares[b] && squares[c] && squares[a] === squares[b] && squares[b] === squares[c]) {
         return squares[a];
       }
     }
@@ -53,14 +53,14 @@ class Game extends Component {
     newState[i] = this.state.currentMark;
     this.setState({
       history: newHistory.concat([{ squares: newState, coordinate: i }]),
-      currentMark: this.state.currentMark === "X" ? "O" : "X",
-      stepNumber: stepNumber + 1
+      currentMark: this.state.currentMark === 'X' ? 'O' : 'X',
+      stepNumber: stepNumber + 1,
     });
   }
   jumpTo(stepNumber) {
     this.setState({
       stepNumber,
-      currentMark: stepNumber % 2 === 0 ? "X" : "O"
+      currentMark: stepNumber % 2 === 0 ? 'X' : 'O',
     });
   }
 
@@ -75,45 +75,37 @@ class Game extends Component {
     const draw = winner === null && stepNumber >= 9;
 
     const status = winner
-      ? `Winner is ${winner}`
+      ? `Winner is ${winner}. Restart?`
       : draw
-      ? "Draw, restart?"
+      ? 'Draw, restart?'
       : `Next player: ${this.state.currentMark}`;
 
     const moves = (
-      <Moves
-        history={history}
-        stepNumber={stepNumber}
-        reverse={this.state.asc}
-        onClick={i => this.jumpTo(i)}
-      />
+      <Moves history={history} stepNumber={stepNumber} reverse={this.state.asc} onClick={(i) => this.jumpTo(i)} />
     );
     return (
-      <div className=" game">
-        <div className="game-board">
-          <div>{status}</div>
-          <Container style={{ display: "flex" }}>
-            <div style={{ minWidth: "297px" }}>
-              <Board
-                squares={currentSquares}
-                onClick={i => this.handleClick(i)}
-              />
-            </div>
+      <div className={styles.container}>
+        <div>
+          <div className={`${styles.sortBtn} ${styles.title}`} onClick={() => this.sortMove()}>
+            Sort
+          </div>
 
-            <div>
-              <div
-                style={{
-                  cursor: "pointer"
-                }}
-                onClick={() => this.sortMove()}
-              >
-                Sort
-              </div>
-
-              {moves}
-            </div>
-          </Container>
+          {moves}
         </div>
+        <div className={styles.game}>
+          <div
+            className={styles.title}
+            onClick={() => {
+              if (winner || draw) {
+                this.restart();
+              }
+            }}
+          >
+            {status}
+          </div>
+          <Board squares={currentSquares} onClick={(i) => this.handleClick(i)} />
+        </div>
+        <div></div>
       </div>
     );
   }

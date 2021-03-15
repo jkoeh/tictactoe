@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Square from "./square";
-import styles from "../styles/board.module.css";
+import React, { Component } from 'react';
+import Square from './square';
+import styles from '../styles/board.module.css';
 
-import WinningLine from "./winningLine";
+import WinningLine from './winningLine';
 
 class Board extends Component {
   getWinningSquares(squares) {
@@ -14,18 +14,12 @@ class Board extends Component {
       [2, 5, 8],
       [2, 4, 6],
       [3, 4, 5],
-      [6, 7, 8]
+      [6, 7, 8],
     ];
     let answer;
     for (let line of lines) {
       const [a, b, c] = line;
-      if (
-        squares[a] &&
-        squares[b] &&
-        squares[c] &&
-        squares[a] === squares[b] &&
-        squares[b] === squares[c]
-      ) {
+      if (squares[a] && squares[b] && squares[c] && squares[a] === squares[b] && squares[b] === squares[c]) {
         answer = [a, b, c];
       }
     }
@@ -50,7 +44,7 @@ class Board extends Component {
       squares.push(this.renderSquare(j, highLighted));
     }
     return (
-      <div style={{ position: "relative" }} key={i} className="board-row">
+      <div key={i} className={styles['board-row']}>
         {squares}
       </div>
     );
@@ -62,13 +56,12 @@ class Board extends Component {
       boardRows.push(this.renderBoardRow(i));
     }
     return (
-      <div
-        style={{ width: "297px", position: "relative" }}
-        className={styles.board}
-      >
-        <div style={{ position: "absolute", width: "297px", height: "100%" }}>
-          {winningSquare ? <WinningLine winningSquare={winningSquare} /> : ""}
-        </div>
+      <div className={styles.board}>
+        {winningSquare && (
+          <div style={{ position: 'absolute', width: '297px', height: '297px' }}>
+            <WinningLine winningSquare={winningSquare} />
+          </div>
+        )}
         {boardRows}
       </div>
     );
